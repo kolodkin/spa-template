@@ -25,6 +25,13 @@ uv run pytest
 The tests start the server themselves on a free port; each test gets a
 fresh Playwright page.
 
+Every run also produces curated screenshots in `test-results/shots/`
+(gitignored, cleared at the start of each run). Tests take the `shot`
+fixture and call `shot("name")` at visually meaningful moments; files are
+numbered in the order they were taken (`01-home.png`, `02-app-ready.png`,
+…), so the directory reads as a visual walkthrough of the suite. Add a
+`shot(...)` call whenever a test reaches a state worth seeing.
+
 ## Deploy
 
 `.github/workflows/pages.yml` runs the tests, stages `web/` as the site,

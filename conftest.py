@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import glob
+import itertools
 import os
+import shutil
 import socket
 import threading
 import time
@@ -13,6 +15,7 @@ import pytest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 WEB = os.path.join(HERE, "web")
+SHOTS = os.path.join(HERE, "test-results", "shots")
 
 
 def _free_port() -> int:
@@ -43,6 +46,33 @@ def browser_type_launch_args(browser_type_launch_args):
     if found:
         args["executable_path"] = found[-1]
     return args
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _shots_dir():
+    """Start each run with an empty test-results/shots/ so the directory only
+    ever holds this run's screenshots."""
+    shutil.rmtree(SHOTS, ignore_errors=True)
+    os.makedirs(SHOTS, exist_ok=True)
+
+
+@pytest.fixture(scope="session")
+def _shot_counter():
+    return itertools.count(1)
+
+
+@pytest.fixture()
+def shot(page, _shot_counter):
+    """Save a curated full-page screenshot to test-results/shots/NN-<name>.png.
+
+    The NN prefix is a run-wide counter, so filenames sort in the order the
+    screenshots were taken."""
+    def _shot(name: str) -> str:
+        path = os.path.join(SHOTS, f"{next(_shot_counter):02d}-{name}.png")
+        page.screenshot(path=path, full_page=True)
+        return path
+
+    return _shot
 
 
 @pytest.fixture()
