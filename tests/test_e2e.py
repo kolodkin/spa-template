@@ -8,18 +8,20 @@ def _wait_ready(page):
     )
 
 
-def test_page_loads(server_url, page):
+def test_page_loads(server_url, page, shot):
     page.goto(server_url + "/")
     _wait_ready(page)
     expect(page).to_have_title("SPA Template")
     expect(page.locator("h1")).to_have_text("Hello, world!")
+    shot("home")
 
 
-def test_app_script_runs(server_url, page):
+def test_app_script_runs(server_url, page, shot):
     # main.js executed: it flips the status line from "Loading…" to "Ready.".
     page.goto(server_url + "/")
     _wait_ready(page)
     expect(page.locator("#status")).to_have_text("Ready.")
+    shot("app-ready")
 
 
 def test_no_console_errors(server_url, page):
