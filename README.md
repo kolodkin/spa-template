@@ -38,8 +38,12 @@ numbered in the order they were taken (`01-home.png`, `02-app-ready.png`,
 and deploys on every push to `main`. Pull requests run the tests and a
 build as a check without deploying.
 
+Each successful deployment is tagged `deploy-<date>-<time>` (UTC) on the
+deployed commit, so `git tag -l 'deploy-*'` lists the deploy history.
+
 One-time repo setup: in **Settings → Pages**, set the source to
-**GitHub Actions**.
+**GitHub Actions**. The site is then served from
+`https://<owner>.github.io/<repo>/`.
 
 ## Structure
 
