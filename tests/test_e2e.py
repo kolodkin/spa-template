@@ -17,7 +17,7 @@ def test_page_loads(server_url, page, shot):
 
 
 def test_app_script_runs(server_url, page, shot):
-    # main.js executed: it flips the status line from "Loading…" to "Ready.".
+    # init() from main.js ran: it flips the status line from "Loading…" to "Ready.".
     page.goto(server_url + "/")
     _wait_ready(page)
     expect(page.locator("#status")).to_have_text("Ready.")

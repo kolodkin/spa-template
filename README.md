@@ -49,6 +49,8 @@ One-time repo setup: in **Settings → Pages**, set the source to
 
 ```
 web/            the app (index.html, main.js, styles.css, favicon.svg)
+                index.html maps "app" -> ./main.js in an import map and
+                imports { init } from it; add libraries to the map the same way
 serve.py        minimal static server with ES-module MIME types
 run.sh          local entry point
 tests/          Playwright e2e tests
